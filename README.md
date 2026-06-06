@@ -1,96 +1,155 @@
-# VendorBridge ERP
+# VendorBridge ERP – Procurement & Vendor Management System
 
-VendorBridge is a lightweight, responsive Procurement and Vendor Management Enterprise Resource Planning (ERP) system built with Vanilla PHP and MySQL. It is designed to be straightforward, secure, and easy to deploy on any standard LAMP/WAMP stack like XAMPP without relying on heavy frameworks or external dependencies.
+VendorBridge is a lightweight, cloud-ready Enterprise Resource Planning (ERP) platform designed specifically for digitizing and automating procurement and vendor workflows. 
 
-## 🚀 Features
+## Problem It Solves
+Traditional procurement relies on scattered emails, manual Excel tracking, and undocumented verbal approvals, leading to inefficiencies, lost records, and lack of accountability. VendorBridge centralizes the entire procurement lifecycle—from vendor onboarding to quote comparison, automated purchase orders, and invoicing—creating a secure, auditable, and structured workflow.
 
-- **Role-Based Access Control (RBAC)**: Secure access tailored for Admins, Procurement Officers, Managers, and Vendors.
-- **Vendor Management**: Complete CRUD operations for vendor profiles.
-- **Secure Authentication**: Utilizes `password_hash()` and `password_verify()` with secure session management.
-- **Database Security**: All SQL queries strictly use **PDO Prepared Statements** to prevent SQL injection.
-- **Responsive UI**: Clean, professional interface styled with **Bootstrap 5**.
-
-## 🛠️ Tech Stack
-
-- **Backend**: Plain PHP 8+ (No Frameworks, No Composer)
-- **Database**: MySQL (PDO Extension)
-- **Frontend**: HTML5, Vanilla CSS, Vanilla JS, Bootstrap 5 CDN, Bootstrap Icons
-- **Environment**: XAMPP (or any standard web server)
-
-## ⚙️ Installation & Setup
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/FajalKasmani/VendorBridge.git
-   ```
-   *Place the `VendorBridge` folder inside your `htdocs` (XAMPP) or `www` (WAMP) directory.*
-
-2. **Database Setup**
-   - Open **phpMyAdmin** (`http://localhost/phpmyadmin/`).
-   - You don't need to manually create the database; the SQL scripts handle it.
-   - Import `database.sql` (Phase 1 core schema).
-   - Import `phase2_db.sql` (Phase 2 Vendor Management schema).
-
-3. **Configure Database Connection**
-   - The connection is pre-configured for a default XAMPP setup (user: `root`, password: `[empty]`).
-   - If your setup is different, update the credentials in `config/db_connect.php`.
-
-4. **Seed Demo Users**
-   - To ensure your password hashes match your local PHP environment natively, open your browser and run:
-     `http://localhost/VendorBridge/seed_users.php`
-   - This will populate the `roles` and `users` tables securely.
-
-## 👥 User Roles & Demo Credentials
-
-Use these credentials to log in and explore the role-based features.
-
-| Role | Email | Password | Access Level |
-|------|-------|----------|--------------|
-| **Admin** | `admin@vendorbridge.com` | `admin123` | Full System Access |
-| **Procurement Officer** | `officer@vendorbridge.com` | `officer123` | Vendors, RFQs |
-| **Manager** | `manager@vendorbridge.com` | `manager123` | Approvals, Reports |
-| **Vendor** | `vendor@vendorbridge.com` | `vendor123` | Self-Service, Quotations |
-
-## 📁 Project Structure
-
-```text
-vendorbridge/
-│
-├── assets/
-│   ├── css/style.css       # Custom ERP styling
-│   └── js/script.js        # Custom interactivity
-│
-├── config/
-│   └── db_connect.php      # PDO database connection
-│
-├── includes/
-│   ├── auth_check.php      # Session and security guard
-│   ├── header.php          # Top Navbar & Bootstrap CDN
-│   ├── sidebar.php         # Role-based sidebar navigation
-│   └── footer.php          # Footer & JS Scripts
-│
-├── add_vendor.php          # UI: Create new vendor
-├── auth_logic.php          # Logic: Processes login
-├── dashboard.php           # UI: Main ERP dashboard
-├── database.sql            # Core database schema
-├── edit_vendor.php         # UI: Edit vendor profile
-├── login.php               # UI: Authentication portal
-├── logout.php              # Logic: Destroys session
-├── phase2_db.sql           # Schema updates for Phase 2
-├── seed_users.php          # Script: Generates valid users/hashes
-├── vendor_actions.php      # Logic: Vendor CRUD operations
-├── vendors.php             # UI: Vendor listing/management
-└── view_vendor.php         # UI: Read-only vendor profile
-```
-
-## 🔒 Security Measures
-
-- Direct access to internal pages redirects to `login.php`.
-- Session fixation protection on login.
-- `password_hash()` (BCRYPT) used for all user passwords.
-- Form inputs validated and sanitized before database insertion.
-- Prepared statements (`?`) used consistently to prevent SQL Injection.
-- Unique constraints on database columns (e.g., Emails, GST numbers) to maintain data integrity.
+## ERP Workflow Overview
+1. **Onboarding**: Vendors register and are approved by Admins.
+2. **Sourcing**: Procurement Officers create Requests for Quotation (RFQs) and assign them to approved vendors.
+3. **Bidding**: Vendors log in to their self-service portal to submit structured quotations.
+4. **Evaluation**: Managers use a side-by-side comparison matrix to evaluate bids and approve the best offer.
+5. **Fulfillment**: Approved quotes are automatically converted into Purchase Orders (POs) and Invoices.
+6. **Audit**: Every action is permanently recorded in an immutable activity log.
 
 ---
-*Developed for the VendorBridge ERP Project.*
+
+## Features
+
+### Authentication System
+* Role-based login (Admin, Officer, Manager, Vendor)
+* Secure session management and password hashing
+* Public vendor registration with approval gates
+
+### Vendor Management
+* Vendor CRUD operations
+* Vendor login mapping and secure profiles
+
+### RFQ System
+* RFQ creation with secure file attachments
+* Dynamic item management
+* Vendor assignment functionality
+
+### Quotation System
+* Vendor bidding system via dedicated self-service portal
+* Itemized quotations
+* One quote per vendor per RFQ constraint
+
+### Approval Engine
+* Quote comparison matrix
+* Lowest price highlighting
+* Manager approval workflow with status tracking
+
+### Procurement Module
+* Auto-generated Purchase Orders from approved quotes
+* Invoice generation with tax calculations
+* 1-click email dispatch for invoices
+
+### Reporting
+* Activity logs for system auditing
+* Real-time notification system
+* Analytics dashboard with CSV exports
+
+---
+
+## Tech Stack
+* **Backend**: Vanilla PHP 8+ (No Frameworks, No Composer required)
+* **Database**: MySQL (PDO Extension with Prepared Statements)
+* **Frontend**: HTML5, Vanilla CSS, Vanilla JavaScript
+* **UI Framework**: Bootstrap 5 (loaded via CDN)
+* **Deployment**: Shared Hosting, XAMPP, or any standard LAMP stack compatible
+
+---
+
+## Installation Guide
+
+Follow these steps to deploy VendorBridge on any standard hosting environment or localhost:
+
+1. **Clone repository**
+   Download or clone the repository to your local machine or server.
+
+2. **Upload to hosting / htdocs**
+   Upload the contents of the `vendorbridge-erp` folder directly to your `public_html`, `www`, or `htdocs` directory via FTP/File Manager.
+
+3. **Import database SQL file**
+   Access your hosting's phpMyAdmin (or local equivalent) and import the `database/vendorbridge.sql` file.
+
+4. **Configure db_connect.php**
+   Open `config/config.php` and update the environment variables or default values to match your database credentials:
+   - `DB_HOST`
+   - `DB_NAME`
+   - `DB_USER`
+   - `DB_PASS`
+
+5. **Login credentials**
+   Navigate to your domain to access the login portal.
+
+---
+
+## Default Login Accounts
+
+Use the following credentials to explore the different roles:
+
+* **Admin**: `admin@vendorbridge.com` | `admin123`
+* **Officer**: `officer@vendorbridge.com` | `officer123`
+* **Manager**: `manager@vendorbridge.com` | `manager123`
+* **Vendor**: `vendor@vendorbridge.com` | `vendor123`
+
+---
+
+## Folder Structure
+
+```text
+vendorbridge-erp/
+│
+├── config/              # Dynamic BASE_URL and DB config
+├── modules/
+│   ├── auth/            # Registration & password recovery
+│   ├── dashboard/       # Dashboards & Analytics
+│   ├── vendors/         # Vendor profiles & management
+│   ├── rfqs/            # RFQ creation & details
+│   ├── quotations/      # Vendor bidding & portal
+│   ├── approvals/       # Manager quote comparison
+│   ├── procurement/     # Purchase Orders
+│   ├── invoices/        # Billing & emails
+│   └── logs/            # Global activity logs
+│
+├── assets/
+│   ├── css/
+│   └── js/
+│
+├── database/
+│   └── vendorbridge.sql # Consolidated DB Schema + Demo Data
+│
+├── uploads/             # Secure file storage
+│
+├── index.php            # Root router
+├── login.php            # Primary Auth Entry
+├── logout.php           # Session destroyer
+└── README.md            # You are here
+```
+
+---
+
+## Security Notes
+
+* **SQL Injection Prevention**: 100% of database queries use PDO prepared statements.
+* **Authentication**: Password hashing (`bcrypt`) implemented natively via `password_hash()`.
+* **Access Control**: Strict Role-Based Access Control (RBAC) enforced on every module.
+* **Session Protection**: Cross-Site Request Forgery (CSRF) tokens and secure session regeneration enabled.
+* **No Hardcoding**: `BASE_URL` dynamically detects protocols and host headers, making it completely portable across environments without manually editing URLs.
+
+---
+
+## Live Demo
+[Live Demo URL (optional)](#)
+
+---
+
+## Future Enhancements
+* AI vendor scoring and automated selection criteria
+* Advanced visual analytics dashboard
+* Multi-company / Multi-tenant ERP support
+* API integration support (REST/GraphQL)
+* Native mobile app extension for field officers
