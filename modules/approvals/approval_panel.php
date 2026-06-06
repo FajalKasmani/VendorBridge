@@ -2,8 +2,8 @@
 /**
  * Manager Approval Panel
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: Only Manager (3) can approve
 if ($_SESSION['role_id'] != 3) {

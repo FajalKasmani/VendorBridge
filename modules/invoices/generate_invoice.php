@@ -2,8 +2,8 @@
 /**
  * Generate Invoice
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 if ($_SESSION['role_id'] == 3 || $_SESSION['role_id'] == 4) {
     die("Access Denied.");

@@ -2,8 +2,8 @@
 /**
  * View Invoice
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 $invoice_id = $_GET['id'] ?? null;
 if (!$invoice_id) {

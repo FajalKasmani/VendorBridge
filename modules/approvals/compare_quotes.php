@@ -2,8 +2,8 @@
 /**
  * Compare Quotes Panel
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: Admin (1), Officer (2), Manager (3)
 if ($_SESSION['role_id'] == 4) {

@@ -2,8 +2,8 @@
 /**
  * Generate Purchase Order
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Only Admin (1) or Procurement Officer (2) can generate POs
 if ($_SESSION['role_id'] == 3 || $_SESSION['role_id'] == 4) {

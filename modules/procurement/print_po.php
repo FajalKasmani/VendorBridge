@@ -2,8 +2,8 @@
 /**
  * Print Purchase Order
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 $po_id = $_GET['id'] ?? null;
 if (!$po_id) {

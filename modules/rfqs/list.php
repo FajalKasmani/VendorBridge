@@ -2,8 +2,8 @@
 /**
  * RFQs List Page
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: All except Vendor (4) can access. Manager (3) can view only.
 if ($_SESSION['role_id'] == 4) {

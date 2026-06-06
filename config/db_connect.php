@@ -4,18 +4,13 @@
  * Uses PDO for secure database access
  */
 
-// Define Base URL for absolute paths throughout the application
-if (!defined('BASE_URL')) {
-    // Assuming the app is accessed via http://localhost/VendorBridge/
-    // If you run it on a root domain, change to '/'
-    define('BASE_URL', '/VendorBridge/'); 
-}
+require_once __DIR__ . '/config.php';
 
-// Database credentials
-$host = 'localhost';
-$dbname = 'vendorbridge_db';
-$username = 'root';
-$password = ''; // empty password for default XAMPP
+// Database credentials from config
+$host = DB_HOST;
+$dbname = DB_NAME;
+$username = DB_USER;
+$password = DB_PASS;
 
 try {
     // Create PDO connection string (DSN)

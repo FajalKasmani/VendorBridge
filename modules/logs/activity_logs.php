@@ -2,8 +2,8 @@
 /**
  * Global Activity Logs
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Only Admin (1) and Manager (3) can view all logs. Officer (2) might be able to as well.
 // Vendor (4) cannot view system logs.
@@ -17,8 +17,13 @@ $module_filter = $_GET['module'] ?? '';
 $date_filter = $_GET['date'] ?? '';
 
 try {
+    // Pagination variables
+    $limit = 50;
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($page - 1) * $limit;
+
     $query = "
-        SELECT a.*, u.username, u.role_id, r.role_name 
+        SELECT SQL_CALC_FOUND_ROWS a.*, u.username, u.role_id, r.role_name 
         FROM activity_logs a
         JOIN users u ON a.user_id = u.user_id
         JOIN roles r ON u.role_id = r.role_id
@@ -41,11 +46,16 @@ try {
         $params[] = $date_filter;
     }
 
-    $query .= " ORDER BY a.log_id DESC LIMIT 500"; // limit to recent 500 logs to prevent lag
+    $query .= " ORDER BY a.log_id DESC LIMIT $limit OFFSET $offset";
 
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     $logs = $stmt->fetchAll();
+
+    // Get total rows for pagination
+    $total_stmt = $pdo->query("SELECT FOUND_ROWS()");
+    $total_rows = $total_stmt->fetchColumn();
+    $total_pages = ceil($total_rows / $limit);
 
     // Fetch filters
     $u_stmt = $pdo->query("SELECT user_id, username FROM users ORDER BY username");
@@ -135,6 +145,27 @@ require_once '../../includes/sidebar.php';
             </table>
         </div>
     </div>
+    <?php if ($total_pages > 1): ?>
+    <div class="card-footer bg-white py-3">
+        <nav aria-label="Activity logs pagination">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?>&user=<?php echo urlencode($user_filter); ?>&module=<?php echo urlencode($module_filter); ?>&date=<?php echo urlencode($date_filter); ?>">Previous</a>
+                </li>
+                
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>&user=<?php echo urlencode($user_filter); ?>&module=<?php echo urlencode($module_filter); ?>&date=<?php echo urlencode($date_filter); ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+                
+                <li class="page-item <?php echo ($page >= $total_pages) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?>&user=<?php echo urlencode($user_filter); ?>&module=<?php echo urlencode($module_filter); ?>&date=<?php echo urlencode($date_filter); ?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <?php endif; ?>
 </div>
 
 <?php require_once '../../includes/footer.php'; ?>

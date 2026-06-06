@@ -48,12 +48,20 @@ $role_id = $_SESSION['role_id'] ?? null;
                 </li>
 
                 <!-- Role 1: Admin Links -->
-                <?php if ($role_id == 1): ?>
-                    <li class="nav-item mt-2">
-                        <a class="nav-link <?php echo (strpos($current_uri, '/vendors/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/vendors/list.php">
-                            <i class="bi bi-shop me-2"></i> Vendors
-                        </a>
-                    </li>
+                <?php if ($_SESSION['role_id'] == 1): // Admin Menu ?>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+                    <span>Administration</span>
+                </h6>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>modules/users/list.php">
+                        <i class="bi bi-people me-2"></i> User Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL; ?>modules/vendors/list.php">
+                        <i class="bi bi-building me-2"></i> Vendor Directory
+                    </a>
+                </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo (strpos($current_uri, '/rfqs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/rfqs/list.php">
                             <i class="bi bi-file-earmark-text me-2"></i> RFQs

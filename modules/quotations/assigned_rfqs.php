@@ -2,8 +2,8 @@
 /**
  * Vendor Assigned RFQs List
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: Only Vendor (Role 4)
 if ($_SESSION['role_id'] != 4) {

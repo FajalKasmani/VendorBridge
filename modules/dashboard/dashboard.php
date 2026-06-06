@@ -3,8 +3,8 @@
  * Dashboard File
  * Main landing page post-login showing role-specific statistics
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 require_once '../../includes/header.php';
 require_once '../../includes/sidebar.php';
 

@@ -2,8 +2,8 @@
 /**
  * Create RFQ UI
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: Only Admin & Officer can create
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {

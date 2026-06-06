@@ -2,8 +2,8 @@
 /**
  * List Invoices
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 $role_id = $_SESSION['role_id'];
 $vendor_id = $_SESSION['vendor_id'] ?? null;

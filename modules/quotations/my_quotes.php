@@ -2,8 +2,8 @@
 /**
  * Vendor's Quote History
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: Only Vendor
 if ($_SESSION['role_id'] != 4) {

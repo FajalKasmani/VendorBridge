@@ -2,8 +2,8 @@
 /**
  * View Quotation Read-only
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 $quote_id = $_GET['id'] ?? null;
 if (!$quote_id) {

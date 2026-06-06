@@ -2,8 +2,8 @@
 /**
  * View RFQ Details
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 if ($_SESSION['role_id'] == 4) {
     require_once '../../includes/header.php';

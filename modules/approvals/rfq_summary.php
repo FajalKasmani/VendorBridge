@@ -2,8 +2,8 @@
 /**
  * RFQ Summary / Final Report
  */
-require_once '../../includes/auth_check.php';
 require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 
 // Role Check: All internal staff can view (Vendor cannot)
 if ($_SESSION['role_id'] == 4) {
