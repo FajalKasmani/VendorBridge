@@ -33,7 +33,7 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
+                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="rfqs.php">
                         <i class="bi bi-file-earmark-text me-2"></i> RFQs
                     </a>
                 </li>
@@ -52,7 +52,7 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
+                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="rfqs.php">
                         <i class="bi bi-file-earmark-text me-2"></i> RFQs
                     </a>
                 </li>

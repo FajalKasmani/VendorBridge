@@ -27,17 +27,31 @@ switch ($role_id) {
         break;
 }
 
-// Dummy values for Phase 1 Statistics
-$total_vendors = 42;
-$active_rfqs = 15;
-$total_quotations = 87;
-$pending_pos = 12;
+// Live DB Counts
+$total_vendors = 0;
+$active_rfqs = 0;
+$assigned_rfqs = 0;
+$total_quotations = 0;
 
-// In future versions, these counts will be fetched using PDO similar to this:
-/*
-$stmt = $pdo->query("SELECT COUNT(*) as count FROM vendors WHERE status = 'active'");
-$total_vendors = $stmt->fetch()['count'];
-*/
+try {
+    // Total Active Vendors
+    $v_stmt = $pdo->query("SELECT COUNT(*) FROM vendor_profiles WHERE status = 'active'");
+    $total_vendors = $v_stmt->fetchColumn();
+
+    // Open RFQs
+    $r_stmt = $pdo->query("SELECT COUNT(*) FROM rfqs WHERE status = 'Open'");
+    $active_rfqs = $r_stmt->fetchColumn();
+
+    // Assigned RFQs
+    $ar_stmt = $pdo->query("SELECT COUNT(*) FROM rfqs WHERE status = 'Assigned'");
+    $assigned_rfqs = $ar_stmt->fetchColumn();
+    
+    // Quotations (Assuming we have quotations table from Phase 1 structure or placeholder)
+    $q_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status = 'pending'");
+    $total_quotations = $q_stmt->fetchColumn();
+} catch (PDOException $e) {
+    // Suppress error if tables don't exist yet for some metrics
+}
 
 ?>
 
@@ -108,14 +122,14 @@ $total_vendors = $stmt->fetch()['count'];
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="card-title text-uppercase mb-1">Purchase Orders</h6>
-                        <h2 class="display-5 mb-0 fw-bold"><?php echo $pending_pos; ?></h2>
+                        <h6 class="card-title text-uppercase mb-1">Assigned RFQs</h6>
+                        <h2 class="display-5 mb-0 fw-bold"><?php echo $assigned_rfqs; ?></h2>
                     </div>
                     <i class="bi bi-cart-check fs-1 opacity-50"></i>
                 </div>
             </div>
             <div class="card-footer bg-danger border-0 d-flex justify-content-between">
-                <small class="text-white-50">Requires approval</small>
+                <small class="text-white-50">Sent to vendors</small>
                 <i class="bi bi-arrow-right-circle"></i>
             </div>
         </div>
