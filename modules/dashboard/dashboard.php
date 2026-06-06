@@ -28,29 +28,25 @@ switch ($role_id) {
 }
 
 // Live DB Counts
-$total_vendors = 0;
-$active_rfqs = 0;
-$assigned_rfqs = 0;
-$total_quotations = 0;
+$rfqs_under_review = 0;
+$pending_approvals = 0;
+$approved_rfqs = 0;
+$rejected_rfqs = 0;
 
 try {
-    // Total Active Vendors
-    $v_stmt = $pdo->query("SELECT COUNT(*) FROM vendor_profiles WHERE status = 'active'");
-    $total_vendors = $v_stmt->fetchColumn();
+    $ur_stmt = $pdo->query("SELECT COUNT(DISTINCT rfq_id) FROM quotations WHERE status = 'Under Review'");
+    $rfqs_under_review = $ur_stmt->fetchColumn();
 
-    // Open RFQs
-    $r_stmt = $pdo->query("SELECT COUNT(*) FROM rfqs WHERE status = 'Open'");
-    $active_rfqs = $r_stmt->fetchColumn();
+    $pa_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status = 'Under Review'");
+    $pending_approvals = $pa_stmt->fetchColumn();
 
-    // Assigned RFQs
-    $ar_stmt = $pdo->query("SELECT COUNT(*) FROM rfqs WHERE status = 'Assigned'");
-    $assigned_rfqs = $ar_stmt->fetchColumn();
+    $app_stmt = $pdo->query("SELECT COUNT(DISTINCT rfq_id) FROM approvals WHERE action = 'Approved'");
+    $approved_rfqs = $app_stmt->fetchColumn();
     
-    // Quotations (Assuming we have quotations table from Phase 1 structure or placeholder)
-    $q_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status IN ('Submitted', 'Under Review')");
-    $total_quotations = $q_stmt->fetchColumn();
+    $rej_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status = 'Rejected'");
+    $rejected_rfqs = $rej_stmt->fetchColumn();
 } catch (PDOException $e) {
-    // Suppress error if tables don't exist yet for some metrics
+    // Suppress error
 }
 
 ?>
@@ -68,32 +64,14 @@ try {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="card-title text-uppercase mb-1">Total Vendors</h6>
-                        <h2 class="display-5 mb-0 fw-bold"><?php echo $total_vendors; ?></h2>
+                        <h6 class="card-title text-uppercase mb-1">RFQs Under Review</h6>
+                        <h2 class="display-5 mb-0 fw-bold"><?php echo $rfqs_under_review; ?></h2>
                     </div>
-                    <i class="bi bi-shop fs-1 opacity-50"></i>
+                    <i class="bi bi-search fs-1 opacity-50"></i>
                 </div>
             </div>
             <div class="card-footer bg-primary border-0 d-flex justify-content-between">
-                <small class="text-white-50">Active partners</small>
-                <i class="bi bi-arrow-right-circle"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card text-white bg-success h-100 shadow-sm border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="card-title text-uppercase mb-1">Active RFQs</h6>
-                        <h2 class="display-5 mb-0 fw-bold"><?php echo $active_rfqs; ?></h2>
-                    </div>
-                    <i class="bi bi-file-earmark-text fs-1 opacity-50"></i>
-                </div>
-            </div>
-            <div class="card-footer bg-success border-0 d-flex justify-content-between">
-                <small class="text-white-50">Open requests</small>
+                <small class="text-white-50">Awaiting manager decision</small>
                 <i class="bi bi-arrow-right-circle"></i>
             </div>
         </div>
@@ -104,15 +82,33 @@ try {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="card-title text-uppercase mb-1 text-dark">Quotations</h6>
-                        <h2 class="display-5 mb-0 fw-bold text-dark"><?php echo $total_quotations; ?></h2>
+                        <h6 class="card-title text-uppercase mb-1 text-dark">Pending Approvals</h6>
+                        <h2 class="display-5 mb-0 fw-bold text-dark"><?php echo $pending_approvals; ?></h2>
                     </div>
-                    <i class="bi bi-receipt fs-1 text-dark opacity-50"></i>
+                    <i class="bi bi-inbox fs-1 text-dark opacity-50"></i>
                 </div>
             </div>
             <div class="card-footer bg-warning border-0 d-flex justify-content-between">
-                <small class="text-dark opacity-75">Pending review</small>
+                <small class="text-dark opacity-75">Quotations awaiting approval</small>
                 <i class="bi bi-arrow-right-circle text-dark"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card text-white bg-success h-100 shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title text-uppercase mb-1">Approved RFQs</h6>
+                        <h2 class="display-5 mb-0 fw-bold"><?php echo $approved_rfqs; ?></h2>
+                    </div>
+                    <i class="bi bi-check-circle fs-1 opacity-50"></i>
+                </div>
+            </div>
+            <div class="card-footer bg-success border-0 d-flex justify-content-between">
+                <small class="text-white-50">Successfully awarded</small>
+                <i class="bi bi-arrow-right-circle"></i>
             </div>
         </div>
     </div>
@@ -122,14 +118,14 @@ try {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="card-title text-uppercase mb-1">Assigned RFQs</h6>
-                        <h2 class="display-5 mb-0 fw-bold"><?php echo $assigned_rfqs; ?></h2>
+                        <h6 class="card-title text-uppercase mb-1">Rejected Quotes</h6>
+                        <h2 class="display-5 mb-0 fw-bold"><?php echo $rejected_rfqs; ?></h2>
                     </div>
-                    <i class="bi bi-cart-check fs-1 opacity-50"></i>
+                    <i class="bi bi-x-circle fs-1 opacity-50"></i>
                 </div>
             </div>
             <div class="card-footer bg-danger border-0 d-flex justify-content-between">
-                <small class="text-white-50">Sent to vendors</small>
+                <small class="text-white-50">Unsuccessful bids</small>
                 <i class="bi bi-arrow-right-circle"></i>
             </div>
         </div>

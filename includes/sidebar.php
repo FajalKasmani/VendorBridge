@@ -43,6 +43,11 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'compare_quotes.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/approvals/compare_quotes.php">
+                        <i class="bi bi-layout-split me-2"></i> Compare Quotes
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'reports.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
                         <i class="bi bi-bar-chart-line me-2"></i> Reports
                     </a>
@@ -74,6 +79,16 @@ $role_id = $_SESSION['role_id'] ?? null;
                 <li class="nav-item">
                     <a class="nav-link <?php echo (strpos($current_uri, '/rfqs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/rfqs/list.php">
                         <i class="bi bi-file-earmark-text me-2"></i> RFQs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/approvals/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/approvals/approval_panel.php">
+                        <i class="bi bi-check2-circle me-2"></i> Pending Approvals
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'compare_quotes.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/approvals/compare_quotes.php">
+                        <i class="bi bi-layout-split me-2"></i> Compare Quotes
                     </a>
                 </li>
             <?php endif; ?>
