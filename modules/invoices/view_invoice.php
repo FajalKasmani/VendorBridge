@@ -16,7 +16,7 @@ $vendor_id = $_SESSION['vendor_id'] ?? null;
 
 try {
     $stmt = $pdo->prepare("
-        SELECT i.*, p.po_number, p.po_date, q.total_price AS subtotal, q.quote_id, v.company_name, v.address, v.vendor_id
+        SELECT i.*, p.po_number, p.po_date, q.total_price AS subtotal, q.quote_id, v.company_name, v.vendor_id
         FROM invoices i
         JOIN purchase_orders p ON i.po_id = p.po_id
         JOIN quotations q ON p.quote_id = q.quote_id
@@ -76,7 +76,6 @@ require_once '../../includes/sidebar.php';
                     <div class="col-6">
                         <h6 class="text-muted text-uppercase mb-1">Billed To</h6>
                         <p class="fw-bold mb-0"><?php echo htmlspecialchars($inv['company_name']); ?></p>
-                        <small class="text-muted"><?php echo nl2br(htmlspecialchars($inv['address'] ?? '')); ?></small>
                     </div>
                     <div class="col-6 text-end">
                         <h6 class="text-muted text-uppercase mb-1">Reference</h6>
