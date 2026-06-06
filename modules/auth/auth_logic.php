@@ -32,7 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Password is correct, set session variables
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['role_id'] = $user['role_id'];
-            $_SESSION['full_name'] = $user['full_name'];
+            $_SESSION['username'] = $user['username'];
+            
+            // Redirect Vendor to Vendor Dashboard, others to generic dashboard
+            if ($user['role_id'] == 4) {
+                header("Location: " . BASE_URL . "modules/quotations/vendor_dashboard.php");
+            } else {
+                header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
+            }
+            exit();
 
             // Prevent session fixation
             session_regenerate_id(true);

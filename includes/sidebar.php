@@ -38,8 +38,42 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/quotations/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/quotations/list.php">
+                        <i class="bi bi-calculator me-2"></i> Quotations
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'reports.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
                         <i class="bi bi-bar-chart-line me-2"></i> Reports
+                    </a>
+                </li>
+            <?php elseif ($_SESSION['role_id'] == 4): ?>
+                <!-- Vendor Sidebar -->
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'vendor_dashboard.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/quotations/vendor_dashboard.php">
+                        <i class="bi bi-house-door me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'assigned_rfqs.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/quotations/assigned_rfqs.php">
+                        <i class="bi bi-file-earmark-text me-2"></i> Assigned RFQs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'my_quotes.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/quotations/my_quotes.php">
+                        <i class="bi bi-calculator me-2"></i> My Quotations
+                    </a>
+                </li>
+            <?php else: ?>
+                <!-- Manager/Approver Sidebar -->
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, 'dashboard.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/dashboard/dashboard.php">
+                        <i class="bi bi-house-door me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/rfqs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/rfqs/list.php">
+                        <i class="bi bi-file-earmark-text me-2"></i> RFQs
                     </a>
                 </li>
             <?php endif; ?>

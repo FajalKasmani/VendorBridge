@@ -47,7 +47,7 @@ try {
     $assigned_rfqs = $ar_stmt->fetchColumn();
     
     // Quotations (Assuming we have quotations table from Phase 1 structure or placeholder)
-    $q_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status = 'pending'");
+    $q_stmt = $pdo->query("SELECT COUNT(*) FROM quotations WHERE status IN ('Submitted', 'Under Review')");
     $total_quotations = $q_stmt->fetchColumn();
 } catch (PDOException $e) {
     // Suppress error if tables don't exist yet for some metrics
