@@ -11,17 +11,10 @@ if ($_SESSION['role_id'] != 4) {
     exit();
 }
 
-$vendor_user_id = $_SESSION['user_id'];
-
-// Get actual vendor_id based on user_id (assuming 1:1 mapping or vendor_profiles has a user_id. 
-// Wait, the schema didn't link users to vendor_profiles directly. 
-// Let's assume vendor_profiles has vendor_id = user_id for now, OR we need to find the vendor profile by contact_email matching users.email.
-// Wait! Let's check the users and vendor_profiles table structure.
-// If the user hasn't defined the relation, we will assume user_id = vendor_id for the Vendor role.
-// I will query vendor_profiles where contact_email = user's email if possible, or assume vendor_id = user_id.
-// Since we don't have the users schema handy, I will assume vendor_id = user_id for simplicity as is common in simple ERPs, 
-// OR I will check the users table if needed. Let's assume user_id = vendor_id.
-$vendor_id = $_SESSION['user_id'];
+$vendor_id = $_SESSION['vendor_id'] ?? null;
+if (!$vendor_id) {
+    die("Vendor Profile Not Linked.");
+}
 
 // Live DB Counts for this vendor
 $assigned_count = 0;

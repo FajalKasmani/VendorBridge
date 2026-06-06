@@ -11,7 +11,8 @@ if ($_SESSION['role_id'] != 4) {
     exit();
 }
 
-$vendor_id = $_SESSION['user_id'];
+$vendor_id = $_SESSION['vendor_id'] ?? null;
+if (!$vendor_id) die("Vendor Profile Not Linked.");
 
 try {
     // Fetch all assigned RFQs for this vendor that are Open/Assigned

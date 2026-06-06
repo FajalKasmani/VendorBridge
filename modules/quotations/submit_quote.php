@@ -12,7 +12,7 @@ if ($_SESSION['role_id'] != 4) {
 }
 
 $rfq_id = $_GET['rfq_id'] ?? null;
-$vendor_id = $_SESSION['user_id'];
+$vendor_id = $_SESSION['vendor_id'] ?? null;
 
 if (!$rfq_id) {
     header("Location: assigned_rfqs.php");

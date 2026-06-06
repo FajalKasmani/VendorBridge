@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 4) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rfq_id = $_POST['rfq_id'];
-    $vendor_id = $_SESSION['user_id'];
+    $vendor_id = $_SESSION['vendor_id'] ?? null;
     $delivery_days = intval($_POST['delivery_days']);
     $item_ids = $_POST['item_ids'] ?? [];
     $unit_prices = $_POST['unit_prices'] ?? [];
