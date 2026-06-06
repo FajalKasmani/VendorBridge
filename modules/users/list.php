@@ -15,7 +15,7 @@ $role_filter = $_GET['role'] ?? '';
 
 try {
     $query = "
-        SELECT u.user_id, u.full_name, u.username, u.email, u.created_at, r.role_name, r.role_id 
+        SELECT u.user_id, u.full_name, u.email, u.created_at, r.role_name, r.role_id 
         FROM users u
         JOIN roles r ON u.role_id = r.role_id
         WHERE 1=1
@@ -98,7 +98,6 @@ require_once '../../includes/sidebar.php';
                 <thead class="table-dark">
                     <tr>
                         <th class="ps-4">Full Name</th>
-                        <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Joined</th>
@@ -110,7 +109,6 @@ require_once '../../includes/sidebar.php';
                         <?php foreach ($users as $user): ?>
                         <tr>
                             <td class="ps-4 fw-bold"><?php echo htmlspecialchars($user['full_name']); ?></td>
-                            <td><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
                             <td>
                                 <?php

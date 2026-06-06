@@ -49,11 +49,6 @@ require_once '../../includes/sidebar.php';
                 <label class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
                 <input type="email" name="email" class="form-control" required placeholder="e.g. john@vendorbridge.com">
             </div>
-            
-            <div class="mb-3">
-                <label class="form-label fw-bold">Username <span class="text-danger">*</span></label>
-                <input type="text" name="username" class="form-control" required placeholder="e.g. jdoe">
-            </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Assign Role <span class="text-danger">*</span></label>

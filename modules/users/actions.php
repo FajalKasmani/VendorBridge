@@ -17,22 +17,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add_user') {
         $full_name = trim($_POST['full_name']);
         $email = trim($_POST['email']);
-        $username = trim($_POST['username']);
         $role_id = $_POST['role_id'];
         $password = $_POST['password'];
 
-        if (empty($full_name) || empty($email) || empty($username) || empty($role_id) || empty($password)) {
+        if (empty($full_name) || empty($email) || empty($role_id) || empty($password)) {
             $_SESSION['error_msg'] = "All fields are required.";
             header("Location: add.php");
             exit();
         }
 
         try {
-            // Check if username or email already exists
-            $chk = $pdo->prepare("SELECT user_id FROM users WHERE username = ? OR email = ?");
-            $chk->execute([$username, $email]);
+            // Check if email already exists
+            $chk = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");
+            $chk->execute([$email]);
             if ($chk->fetch()) {
-                $_SESSION['error_msg'] = "Username or Email already exists.";
+                $_SESSION['error_msg'] = "Email already exists.";
                 header("Location: add.php");
                 exit();
             }
@@ -41,12 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $pdo->beginTransaction();
 
-            $stmt = $pdo->prepare("INSERT INTO users (role_id, full_name, username, email, password) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$role_id, $full_name, $username, $email, $hashed_password]);
+            $stmt = $pdo->prepare("INSERT INTO users (role_id, full_name, email, password) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$role_id, $full_name, $email, $hashed_password]);
             
             // Log Activity
             $log_stmt = $pdo->prepare("INSERT INTO activity_logs (user_id, action, module) VALUES (?, ?, 'Users')");
-            $log_stmt->execute([$_SESSION['user_id'], "Added new user: $username"]);
+            $log_stmt->execute([$_SESSION['user_id'], "Added new user: $full_name"]);
 
             $pdo->commit();
 

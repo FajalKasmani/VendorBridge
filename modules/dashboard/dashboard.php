@@ -147,7 +147,7 @@ try {
 $recent_logs = [];
 try {
     $l_stmt = $pdo->query("
-        SELECT a.action, a.created_at, u.username 
+        SELECT a.action, a.created_at, u.full_name as username 
         FROM activity_logs a 
         JOIN users u ON a.user_id = u.user_id 
         ORDER BY a.log_id DESC LIMIT 5

@@ -23,7 +23,7 @@ try {
     $offset = ($page - 1) * $limit;
 
     $query = "
-        SELECT SQL_CALC_FOUND_ROWS a.*, u.username, u.role_id, r.role_name 
+        SELECT SQL_CALC_FOUND_ROWS a.*, u.full_name as username, u.role_id, r.role_name 
         FROM activity_logs a
         JOIN users u ON a.user_id = u.user_id
         JOIN roles r ON u.role_id = r.role_id
