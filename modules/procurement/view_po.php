@@ -16,7 +16,7 @@ $vendor_id = $_SESSION['vendor_id'] ?? null;
 
 try {
     $stmt = $pdo->prepare("
-        SELECT p.*, q.total_price, q.delivery_days, r.title, r.rfq_id, v.company_name, v.contact_email, v.phone, v.vendor_id
+        SELECT p.*, q.total_price, q.delivery_days, r.title, r.rfq_id, v.company_name, v.contact_email, v.vendor_id
         FROM purchase_orders p
         JOIN quotations q ON p.quote_id = q.quote_id
         JOIN rfqs r ON q.rfq_id = r.rfq_id
@@ -81,7 +81,6 @@ require_once '../../includes/sidebar.php';
             <div class="card-body">
                 <h6><strong><?php echo htmlspecialchars($po['company_name']); ?></strong></h6>
                 <p class="mb-1 text-muted"><i class="bi bi-envelope"></i> <?php echo htmlspecialchars($po['contact_email']); ?></p>
-                <p class="mb-0 text-muted"><i class="bi bi-telephone"></i> <?php echo htmlspecialchars($po['phone']); ?></p>
             </div>
         </div>
     </div>

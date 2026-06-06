@@ -58,7 +58,7 @@ try {
     $total_pages = ceil($total_rows / $limit);
 
     // Fetch filters
-    $u_stmt = $pdo->query("SELECT user_id, username FROM users ORDER BY username");
+    $u_stmt = $pdo->query("SELECT user_id, full_name as username FROM users ORDER BY full_name");
     $users = $u_stmt->fetchAll();
 
     $m_stmt = $pdo->query("SELECT DISTINCT module FROM activity_logs ORDER BY module");

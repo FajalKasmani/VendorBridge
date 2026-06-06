@@ -15,7 +15,7 @@ $vendor_id = $_SESSION['vendor_id'] ?? null;
 
 try {
     $stmt = $pdo->prepare("
-        SELECT p.*, q.total_price, q.delivery_days, r.title, r.rfq_id, v.company_name, v.contact_email, v.phone, v.address, v.vendor_id
+        SELECT p.*, q.total_price, q.delivery_days, r.title, r.rfq_id, v.company_name, v.contact_email, v.vendor_id
         FROM purchase_orders p
         JOIN quotations q ON p.quote_id = q.quote_id
         JOIN rfqs r ON q.rfq_id = r.rfq_id
@@ -104,9 +104,7 @@ try {
         <div class="col-6">
             <h6 class="text-muted text-uppercase fw-bold">Vendor To:</h6>
             <h5 class="fw-bold"><?php echo htmlspecialchars($po['company_name']); ?></h5>
-            <p class="mb-0"><?php echo nl2br(htmlspecialchars($po['address'] ?? '')); ?></p>
             <p class="mb-0"><?php echo htmlspecialchars($po['contact_email']); ?></p>
-            <p class="mb-0"><?php echo htmlspecialchars($po['phone']); ?></p>
         </div>
         <div class="col-6 text-end">
             <h6 class="text-muted text-uppercase fw-bold">Order Details:</h6>
