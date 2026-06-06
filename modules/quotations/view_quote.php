@@ -149,6 +149,23 @@ require_once '../../includes/sidebar.php';
             if ($quote['status'] === 'Rejected') $badge = 'bg-danger';
             ?>
             <span class="badge <?php echo $badge; ?> fs-5"><?php echo $quote['status']; ?></span>
+            
+            <?php if ($quote['status'] === 'Approved' && ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2)): ?>
+                <?php 
+                $po_check = $pdo->prepare("SELECT po_id FROM purchase_orders WHERE quote_id = ?");
+                $po_check->execute([$quote_id]);
+                $has_po = $po_check->fetch();
+                if (!$has_po):
+                ?>
+                    <div class="mt-3">
+                        <a href="<?php echo BASE_URL; ?>modules/procurement/generate_po.php?quote_id=<?php echo $quote['quote_id']; ?>" class="btn btn-success"><i class="bi bi-file-earmark-plus"></i> Generate Purchase Order</a>
+                    </div>
+                <?php else: ?>
+                    <div class="mt-3">
+                        <a href="<?php echo BASE_URL; ?>modules/procurement/view_po.php?id=<?php echo $has_po['po_id']; ?>" class="btn btn-outline-success"><i class="bi bi-eye"></i> View Purchase Order</a>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

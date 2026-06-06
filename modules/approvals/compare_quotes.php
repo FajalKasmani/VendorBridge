@@ -195,6 +195,30 @@ require_once '../../includes/sidebar.php';
                                 <?php endforeach; ?>
                             </tr>
                             <?php endif; ?>
+
+                            <?php if (($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2) && $rfq_details['status'] !== 'Closed'): ?>
+                            <tr>
+                                <td colspan="2" class="text-end fw-bold py-3">Procurement Action:</td>
+                                <?php foreach ($quotations as $q): ?>
+                                    <td class="py-3">
+                                        <?php if ($q['status'] === 'Approved'): ?>
+                                            <?php 
+                                            $po_check = $pdo->prepare("SELECT po_id FROM purchase_orders WHERE quote_id = ?");
+                                            $po_check->execute([$q['quote_id']]);
+                                            $has_po = $po_check->fetch();
+                                            if (!$has_po):
+                                            ?>
+                                                <a href="<?php echo BASE_URL; ?>modules/procurement/generate_po.php?quote_id=<?php echo $q['quote_id']; ?>" class="btn btn-success btn-sm w-100"><i class="bi bi-file-earmark-plus"></i> Generate PO</a>
+                                            <?php else: ?>
+                                                <a href="<?php echo BASE_URL; ?>modules/procurement/view_po.php?id=<?php echo $has_po['po_id']; ?>" class="btn btn-outline-success btn-sm w-100"><i class="bi bi-eye"></i> View PO</a>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <span class="text-muted small">-</span>
+                                        <?php endif; ?>
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+                            <?php endif; ?>
                         </tfoot>
                     </table>
                 </div>
