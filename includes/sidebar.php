@@ -28,7 +28,7 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
+                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="vendors.php">
                         <i class="bi bi-shop me-2"></i> Vendors
                     </a>
                 </li>
@@ -47,7 +47,7 @@ $role_id = $_SESSION['role_id'] ?? null;
             <!-- Role 2: Procurement Officer Links -->
             <?php if ($role_id == 2): ?>
                 <li class="nav-item mt-2">
-                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="#">
+                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="vendors.php">
                         <i class="bi bi-shop me-2"></i> Vendors
                     </a>
                 </li>
