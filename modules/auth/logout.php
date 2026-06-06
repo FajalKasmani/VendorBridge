@@ -4,6 +4,7 @@
  * Securely destroys session and redirects to login
  */
 session_start();
+require_once '../../config/db_connect.php';
 
 // Unset all session variables
 $_SESSION = [];
