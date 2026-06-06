@@ -2,14 +2,19 @@
 
 USE vendorbridge_db;
 
+-- Disable foreign key checks to allow dropping interconnected tables safely
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- If tables exist from Phase 1, we drop them to recreate exactly as requested for Phase 3
--- Drop in reverse order of dependencies
 DROP TABLE IF EXISTS rfq_assignments;
 DROP TABLE IF EXISTS rfq_items;
-DROP TABLE IF EXISTS quotations; -- quotations depend on rfqs
-DROP TABLE IF EXISTS purchase_orders; -- POs depend on quotations
-DROP TABLE IF EXISTS invoices; -- Invoices depend on POs
+DROP TABLE IF EXISTS invoices; 
+DROP TABLE IF EXISTS purchase_orders; 
+DROP TABLE IF EXISTS quotations; 
 DROP TABLE IF EXISTS rfqs;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. Create RFQs Table
 CREATE TABLE rfqs (
