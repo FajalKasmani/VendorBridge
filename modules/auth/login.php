@@ -4,7 +4,7 @@
  * Display professional login form and error alerts
  */
 session_start();
-
+require_once '../../config/db_connect.php';
 // Redirect to dashboard if already logged in
 if (isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");

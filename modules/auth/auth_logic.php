@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Password is correct, set session variables
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['role_id'] = $user['role_id'];
-            $_SESSION['username'] = $user['username'];
+            $_SESSION['full_name'] = $user['full_name'];
             
             // Redirect Vendor to Vendor Dashboard, others to generic dashboard
             if ($user['role_id'] == 4) {
