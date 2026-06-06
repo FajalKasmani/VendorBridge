@@ -41,7 +41,7 @@ require_once '../../includes/sidebar.php';
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
-        <form action="<?php echo BASE_URL; ?>modules/vendors/actions.php?action=create" method="POST">
+        <form action="<?php echo BASE_URL; ?>modules/vendors/actions.php?action=add" method="POST">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Company Name <span class="text-danger">*</span></label>
