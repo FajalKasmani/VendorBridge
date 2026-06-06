@@ -34,8 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role_id'] = $user['role_id'];
             $_SESSION['full_name'] = $user['full_name'];
             
-            // Redirect Vendor to Vendor Dashboard, others to generic dashboard
+            // If user is a Vendor, fetch their vendor_id
             if ($user['role_id'] == 4) {
+                $v_stmt = $pdo->prepare("SELECT vendor_id FROM vendor_profiles WHERE user_id = ?");
+                $v_stmt->execute([$user['user_id']]);
+                $vendor = $v_stmt->fetch();
+                if ($vendor) {
+                    $_SESSION['vendor_id'] = $vendor['vendor_id'];
+                } else {
+                    // Fail-safe if vendor profile doesn't exist
+                    $_SESSION['login_error'] = "Vendor profile not found for this account.";
+                    header("Location: " . BASE_URL . "modules/auth/login.php");
+                    exit();
+                }
                 header("Location: " . BASE_URL . "modules/quotations/vendor_dashboard.php");
             } else {
                 header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");

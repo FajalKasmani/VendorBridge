@@ -64,8 +64,13 @@ require_once '../../includes/sidebar.php';
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Contact Email <span class="text-danger">*</span></label>
+                    <label class="form-label">Contact Person Name <span class="text-danger">*</span></label>
+                    <input type="text" name="contact_name" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Login Email <span class="text-danger">*</span></label>
                     <input type="email" name="contact_email" class="form-control" required>
+                    <small class="text-muted">A vendor account will be created with default password: Vendor@123</small>
                 </div>
             </div>
 

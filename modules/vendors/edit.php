@@ -22,7 +22,12 @@ if (!$vendor_id) {
 
 try {
     // Fetch Vendor
-    $stmt = $pdo->prepare("SELECT * FROM vendor_profiles WHERE vendor_id = ?");
+    $stmt = $pdo->prepare("
+        SELECT v.*, u.full_name as contact_name, u.email as login_email 
+        FROM vendor_profiles v 
+        LEFT JOIN users u ON v.user_id = u.user_id 
+        WHERE v.vendor_id = ?
+    ");
     $stmt->execute([$vendor_id]);
     $vendor = $stmt->fetch();
 
@@ -85,8 +90,12 @@ require_once '../../includes/sidebar.php';
                     </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Contact Email <span class="text-danger">*</span></label>
-                    <input type="email" name="contact_email" class="form-control" value="<?php echo htmlspecialchars($vendor['contact_email']); ?>" required>
+                    <label class="form-label">Contact Person Name <span class="text-danger">*</span></label>
+                    <input type="text" name="contact_name" class="form-control" value="<?php echo htmlspecialchars($vendor['contact_name'] ?? ''); ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Login Email <span class="text-danger">*</span></label>
+                    <input type="email" name="contact_email" class="form-control" value="<?php echo htmlspecialchars($vendor['login_email'] ?? $vendor['contact_email']); ?>" required>
                 </div>
             </div>
 

@@ -63,19 +63,17 @@ try {
     $count_stmt->execute($params);
     $total_rows = $count_stmt->fetchColumn();
     $total_pages = ceil($total_rows / $limit);
-} catch (PDOException $e) {
-    $total_pages = 1;
-}
 
-// Fetch vendors
-try {
-    $sql = "SELECT v.*, c.cat_name 
-            FROM vendor_profiles v 
-            LEFT JOIN categories c ON v.category_id = c.cat_id 
-            $where_sql 
-            ORDER BY v.vendor_id DESC 
-            LIMIT $limit OFFSET $offset";
-            
+    // Fetch Records
+    $sql = "
+        SELECT v.*, c.cat_name, u.full_name as contact_person, u.email as login_email
+        FROM vendor_profiles v 
+        LEFT JOIN categories c ON v.category_id = c.cat_id 
+        LEFT JOIN users u ON v.user_id = u.user_id
+        $where_sql 
+        ORDER BY v.company_name ASC 
+        LIMIT $limit OFFSET $offset
+    ";        
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $vendors = $stmt->fetchAll();
@@ -163,13 +161,13 @@ require_once '../../includes/sidebar.php';
                 <thead class="table-dark">
                     <tr>
                         <th class="ps-3">ID</th>
-                        <th>Company Name</th>
-                        <th>GST Number</th>
+                        <th class="ps-4">Company Name</th>
                         <th>Category</th>
-                        <th>Email</th>
+                        <th>Contact Person</th>
+                        <th>Login Email</th>
                         <th>Status</th>
                         <th>Rating</th>
-                        <th class="text-end pe-3">Actions</th>
+                        <th class="text-end pe-4">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -177,21 +175,23 @@ require_once '../../includes/sidebar.php';
                         <?php foreach($vendors as $v): ?>
                             <tr>
                                 <td class="ps-3"><?php echo $v['vendor_id']; ?></td>
-                                <td class="fw-bold"><?php echo htmlspecialchars($v['company_name']); ?></td>
-                                <td><?php echo htmlspecialchars($v['gst_number']); ?></td>
-                                <td><span class="badge bg-secondary"><?php echo htmlspecialchars($v['cat_name'] ?? 'None'); ?></span></td>
-                                <td><?php echo htmlspecialchars($v['contact_email']); ?></td>
+                                <td class="ps-4 fw-semibold"><?php echo htmlspecialchars($v['company_name']); ?></td>
+                                <td><?php echo htmlspecialchars($v['cat_name']); ?></td>
+                                <td><?php echo htmlspecialchars($v['contact_person'] ?? 'N/A'); ?></td>
+                                <td><a href="mailto:<?php echo htmlspecialchars($v['login_email'] ?? $v['contact_email']); ?>" class="text-decoration-none"><?php echo htmlspecialchars($v['login_email'] ?? $v['contact_email']); ?></a></td>
                                 <td>
-                                    <?php 
-                                    if ($v['status'] === 'active') echo '<span class="badge bg-success">Active</span>';
-                                    elseif ($v['status'] === 'inactive') echo '<span class="badge bg-danger">Inactive</span>';
-                                    else echo '<span class="badge bg-warning text-dark">Pending</span>';
-                                    ?>
+                                    <?php if ($v['status'] === 'active'): ?>
+                                        <span class="badge bg-success">Active</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    <?php endif; ?>
                                 </td>
-                                <td><i class="bi bi-star-fill text-warning"></i> <?php echo $v['rating']; ?></td>
-                                <td class="text-end pe-3">
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="<?php echo BASE_URL; ?>modules/vendors/view.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-primary text-white" title="View"><i class="bi bi-eye"></i></a>
+                                <td>
+                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span> <?php echo $v['rating']; ?>/5
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group" role="group">
+                                        <a href="view.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-info text-white" title="View"><i class="bi bi-eye"></i></a>
                                         <a href="<?php echo BASE_URL; ?>modules/vendors/edit.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-warning text-dark" title="Edit"><i class="bi bi-pencil"></i></a>
                                         <button type="button" class="btn btn-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $v['vendor_id']; ?>">
                                             <i class="bi bi-trash"></i>
