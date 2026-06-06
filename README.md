@@ -3,7 +3,7 @@
 VendorBridge is a lightweight, cloud-ready Enterprise Resource Planning (ERP) platform designed specifically for digitizing and automating procurement and vendor workflows. 
 
 ## Problem It Solves
-Traditional procurement relies on scattered emails, manual Excel tracking, and undocumented verbal approvals, leading to inefficiencies, lost records, and lack of accountability. VendorBridge centralizes the entire procurement lifecycle—from vendor onboarding to quote comparison, automated purchase orders, and invoicing—creating a secure, auditable, and structured workflow.
+Traditional procurement systems usually depend on scattered emails, manual Excel sheets, and informal verbal approvals, which often cause confusion, missed records, and a lack of proper tracking. VendorBridge simplifies this entire process by bringing everything into one organized platform—from vendor onboarding and quotation comparison to automated purchase orders and invoicing—making the workflow more structured, transparent, and easy to manage, with better accountability at every step.
 
 ## ERP Workflow Overview
 1. **Onboarding**: Vendors register and are approved by Admins.
