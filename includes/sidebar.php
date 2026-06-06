@@ -111,6 +111,16 @@ $role_id = $_SESSION['role_id'] ?? null;
                             <i class="bi bi-layout-split me-2"></i> Compare Quotes
                         </a>
                     </li>
+                    <li class="nav-item mt-2">
+                        <a class="nav-link <?php echo (strpos($current_uri, '/procurement/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/procurement/po_list.php">
+                            <i class="bi bi-box-seam me-2"></i> Purchase Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (strpos($current_uri, '/invoices/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/invoices/invoice_list.php">
+                            <i class="bi bi-cash-coin me-2"></i> Invoices
+                        </a>
+                    </li>
                 <?php endif; ?>
 
                 <!-- Role 3: Manager Links -->
@@ -128,6 +138,21 @@ $role_id = $_SESSION['role_id'] ?? null;
                     <li class="nav-item">
                         <a class="nav-link <?php echo (strpos($current_uri, 'compare_quotes.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/approvals/compare_quotes.php">
                             <i class="bi bi-layout-split me-2"></i> Compare Quotes
+                        </a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a class="nav-link <?php echo (strpos($current_uri, '/procurement/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/procurement/po_list.php">
+                            <i class="bi bi-box-seam me-2"></i> Purchase Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo (strpos($current_uri, '/invoices/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/invoices/invoice_list.php">
+                            <i class="bi bi-cash-coin me-2"></i> Invoices
+                        </a>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a class="nav-link <?php echo (strpos($current_uri, '/logs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/logs/activity_logs.php">
+                            <i class="bi bi-journal-text me-2"></i> Activity Logs
                         </a>
                     </li>
                 <?php endif; ?>

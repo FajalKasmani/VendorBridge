@@ -61,7 +61,7 @@ try {
     $new_po_id = $pdo->lastInsertId();
 
     // 6. Update RFQ Status
-    $update_rfq = $pdo->prepare("UPDATE rfqs SET status = 'PO Generated' WHERE rfq_id = ?");
+    $update_rfq = $pdo->prepare("UPDATE rfqs SET status = 'Closed' WHERE rfq_id = ?");
     $update_rfq->execute([$rfq_id]);
 
     // 7. Insert Activity Log
