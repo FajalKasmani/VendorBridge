@@ -190,37 +190,6 @@ require_once '../../includes/sidebar.php';
                                             <span class="badge bg-danger">Rejected</span>
                                         <?php else: ?>
                                             <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#approveModal<?php echo $q['quote_id']; ?>">Select Vendor</button>
-                                            
-                                            <!-- Approval Modal -->
-                                            <div class="modal fade" id="approveModal<?php echo $q['quote_id']; ?>" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content text-start">
-                                                        <form action="process_approval.php" method="POST">
-                                                            <div class="modal-header bg-primary text-white">
-                                                                <h5 class="modal-title">Approve Quotation #<?php echo $q['quote_id']; ?></h5>
-                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <input type="hidden" name="rfq_id" value="<?php echo $rfq_id; ?>">
-                                                                <input type="hidden" name="quote_id" value="<?php echo $q['quote_id']; ?>">
-                                                                <input type="hidden" name="action" value="Approved">
-                                                                
-                                                                <p>You are about to approve the quotation from <strong><?php echo htmlspecialchars($q['company_name']); ?></strong> for <strong>$<?php echo number_format($q['total_price'], 2); ?></strong>.</p>
-                                                                <p class="text-danger"><i class="bi bi-exclamation-triangle"></i> This action will lock the RFQ and automatically reject all other vendors.</p>
-                                                                
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Approval Remarks (Optional)</label>
-                                                                    <textarea name="remarks" class="form-control" rows="3" placeholder="Add any final notes..."></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Confirm Approval</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
@@ -232,6 +201,43 @@ require_once '../../includes/sidebar.php';
             </div>
         </div>
     <?php endif; ?>
+<?php endif; ?>
+
+<!-- Render Modals Outside Table-Responsive -->
+<?php if ($rfq_id && $rfq_details && count($quotations) > 0 && $_SESSION['role_id'] == 3 && $rfq_details['status'] !== 'Closed'): ?>
+    <?php foreach ($quotations as $q): ?>
+        <?php if ($q['status'] !== 'Approved' && $q['status'] !== 'Rejected'): ?>
+            <div class="modal fade" id="approveModal<?php echo $q['quote_id']; ?>" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content text-start">
+                        <form action="process_approval.php" method="POST">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">Approve Quotation #<?php echo $q['quote_id']; ?></h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="rfq_id" value="<?php echo $rfq_id; ?>">
+                                <input type="hidden" name="quote_id" value="<?php echo $q['quote_id']; ?>">
+                                <input type="hidden" name="action" value="Approved">
+                                
+                                <p>You are about to approve the quotation from <strong><?php echo htmlspecialchars($q['company_name']); ?></strong> for <strong>$<?php echo number_format($q['total_price'], 2); ?></strong>.</p>
+                                <p class="text-danger"><i class="bi bi-exclamation-triangle"></i> This action will lock the RFQ and automatically reject all other vendors.</p>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Approval Remarks (Optional)</label>
+                                    <textarea name="remarks" class="form-control" rows="3" placeholder="Add any final notes..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Confirm Approval</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
 <?php endif; ?>
 
 <?php require_once '../../includes/footer.php'; ?>

@@ -31,8 +31,11 @@ try {
     }
 
     // Role-based isolation check
-    if ($user_role == 4 && $quote['vendor_id'] != $user_id) {
-        die("Access Denied: You can only view your own quotations.");
+    if ($user_role == 4) {
+        $session_vendor_id = $_SESSION['vendor_id'] ?? null;
+        if ($quote['vendor_id'] != $session_vendor_id) {
+            die("Access Denied: You can only view your own quotations.");
+        }
     }
 
     // Fetch Line Items
