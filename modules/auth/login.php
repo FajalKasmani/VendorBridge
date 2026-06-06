@@ -7,7 +7,7 @@ session_start();
 
 // Redirect to dashboard if already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
+    header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
     exit();
 }
 ?>
@@ -63,7 +63,7 @@ if (isset($_SESSION['user_id'])) {
                         <?php unset($_SESSION['login_error']); ?>
                     <?php endif; ?>
 
-                    <form action="auth_logic.php" method="POST">
+                    <form action="<?php echo BASE_URL; ?>modules/auth/auth_logic.php" method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <div class="input-group">

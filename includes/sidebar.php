@@ -3,7 +3,7 @@
  * Sidebar File
  * Role-based sidebar navigation
  */
-$current_page = basename($_SERVER['PHP_SELF']);
+$current_uri = $_SERVER['REQUEST_URI'];
 $role_id = $_SESSION['role_id'] ?? null;
 ?>
 
@@ -14,7 +14,7 @@ $role_id = $_SESSION['role_id'] ?? null;
             
             <!-- Dashboard Link (Common for all roles) -->
             <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="dashboard.php">
+                <a class="nav-link <?php echo (strpos($current_uri, 'dashboard.php') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/dashboard/dashboard.php">
                     <i class="bi bi-speedometer2 me-2"></i>
                     Dashboard
                 </a>
@@ -28,12 +28,12 @@ $role_id = $_SESSION['role_id'] ?? null;
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="vendors.php">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/vendors/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/vendors/list.php">
                         <i class="bi bi-shop me-2"></i> Vendors
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="rfqs.php">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/rfqs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/rfqs/list.php">
                         <i class="bi bi-file-earmark-text me-2"></i> RFQs
                     </a>
                 </li>
@@ -47,12 +47,12 @@ $role_id = $_SESSION['role_id'] ?? null;
             <!-- Role 2: Procurement Officer Links -->
             <?php if ($role_id == 2): ?>
                 <li class="nav-item mt-2">
-                    <a class="nav-link <?php echo ($current_page == 'vendors.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="vendors.php">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/vendors/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/vendors/list.php">
                         <i class="bi bi-shop me-2"></i> Vendors
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'rfqs.php') ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="rfqs.php">
+                    <a class="nav-link <?php echo (strpos($current_uri, '/rfqs/') !== false) ? 'active bg-primary text-white rounded' : 'text-dark'; ?>" href="<?php echo BASE_URL; ?>modules/rfqs/list.php">
                         <i class="bi bi-file-earmark-text me-2"></i> RFQs
                     </a>
                 </li>

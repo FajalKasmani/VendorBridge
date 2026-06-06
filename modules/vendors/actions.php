@@ -3,18 +3,18 @@
  * Vendor Actions logic (CRUD operations)
  */
 session_start();
-require_once 'config/db_connect.php';
+require_once '../../config/db_connect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: " . BASE_URL . "modules/auth/login.php");
     exit();
 }
 
 // Check Role (Only Admin & Procurement Officer)
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
     $_SESSION['error_msg'] = "Access Denied.";
-    header("Location: dashboard.php");
+    header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
     exit();
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Basic validation
         if (empty($company_name) || empty($gst_number) || empty($contact_email) || empty($category_id)) {
             $_SESSION['error_msg'] = "Please fill all required fields.";
-            header("Location: add_vendor.php");
+            header("Location: " . BASE_URL . "modules/vendors/add.php");
             exit();
         }
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$gst_number, $contact_email]);
             if ($stmt->rowCount() > 0) {
                 $_SESSION['error_msg'] = "GST Number or Email already exists.";
-                header("Location: add_vendor.php");
+                header("Location: " . BASE_URL . "modules/vendors/add.php");
                 exit();
             }
 
@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert->execute([$company_name, $gst_number, $category_id, $contact_email, $status, $rating]);
 
             $_SESSION['success_msg'] = "Vendor added successfully.";
-            header("Location: vendors.php");
+            header("Location: " . BASE_URL . "modules/vendors/list.php");
             exit();
 
         } catch (PDOException $e) {
             $_SESSION['error_msg'] = "Database Error: " . $e->getMessage();
-            header("Location: add_vendor.php");
+            header("Location: " . BASE_URL . "modules/vendors/add.php");
             exit();
         }
     }
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($vendor_id) || empty($company_name) || empty($gst_number) || empty($contact_email)) {
             $_SESSION['error_msg'] = "Please fill all required fields.";
-            header("Location: edit_vendor.php?id=" . $vendor_id);
+            header("Location: " . BASE_URL . "modules/vendors/edit.php?id=" . $vendor_id);
             exit();
         }
 
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$gst_number, $contact_email, $vendor_id]);
             if ($stmt->rowCount() > 0) {
                 $_SESSION['error_msg'] = "GST Number or Email already belongs to another vendor.";
-                header("Location: edit_vendor.php?id=" . $vendor_id);
+                header("Location: " . BASE_URL . "modules/vendors/edit.php?id=" . $vendor_id);
                 exit();
             }
 
@@ -98,12 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $update->execute([$company_name, $gst_number, $category_id, $contact_email, $status, $rating, $vendor_id]);
 
             $_SESSION['success_msg'] = "Vendor updated successfully.";
-            header("Location: vendors.php");
+            header("Location: " . BASE_URL . "modules/vendors/list.php");
             exit();
 
         } catch (PDOException $e) {
             $_SESSION['error_msg'] = "Database Error: " . $e->getMessage();
-            header("Location: edit_vendor.php?id=" . $vendor_id);
+            header("Location: " . BASE_URL . "modules/vendors/edit.php?id=" . $vendor_id);
             exit();
         }
     }
@@ -124,11 +124,11 @@ if ($action === 'delete') {
             $_SESSION['error_msg'] = "Cannot delete vendor. They might have dependent records.";
         }
     }
-    header("Location: vendors.php");
+    header("Location: " . BASE_URL . "modules/vendors/list.php");
     exit();
 }
 
 // Fallback
-header("Location: vendors.php");
+header("Location: " . BASE_URL . "modules/vendors/list.php");
 exit();
 ?>

@@ -4,6 +4,13 @@
  * Uses PDO for secure database access
  */
 
+// Define Base URL for absolute paths throughout the application
+if (!defined('BASE_URL')) {
+    // Assuming the app is accessed via http://localhost/VendorBridge/
+    // If you run it on a root domain, change to '/'
+    define('BASE_URL', '/VendorBridge/'); 
+}
+
 // Database credentials
 $host = 'localhost';
 $dbname = 'vendorbridge_db';

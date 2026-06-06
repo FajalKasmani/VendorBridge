@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Check if user is logged in by verifying session variables
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     // User is not logged in, redirect to login page
-    header("Location: login.php");
+    header("Location: " . BASE_URL . "modules/auth/login.php");
     exit(); // Stop further script execution
 }
 

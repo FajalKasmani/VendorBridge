@@ -2,15 +2,15 @@
 /**
  * RFQs List Page
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check: All except Vendor (4) can access. Manager (3) can view only.
 if ($_SESSION['role_id'] == 4) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied. Vendors cannot access this page.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
@@ -20,6 +20,8 @@ if ($_SESSION['role_id'] == 4) {
 $search = $_GET['search'] ?? '';
 $filter_status = $_GET['status'] ?? '';
 $filter_date = $_GET['date'] ?? '';
+
+$modals_html = ''; // Store modals to output outside table
 
 // -----------------------------------------
 // Pagination Logic
@@ -79,14 +81,14 @@ try {
     $rfqs = [];
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">RFQ Management</h1>
     <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
-        <a href="create_rfq.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Create RFQ</a>
+        <a href="<?php echo BASE_URL; ?>modules/rfqs/create.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Create RFQ</a>
     <?php endif; ?>
 </div>
 
@@ -177,11 +179,11 @@ require_once 'includes/sidebar.php';
                                 </td>
                                 <td class="text-end pe-3">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="view_rfq.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-primary" title="View"><i class="bi bi-eye"></i></a>
+                                        <a href="<?php echo BASE_URL; ?>modules/rfqs/view.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-primary" title="View"><i class="bi bi-eye"></i></a>
                                         
                                         <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
-                                            <a href="edit_rfq.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-warning text-dark" title="Edit"><i class="bi bi-pencil"></i></a>
-                                            <a href="assign_vendors.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-info text-dark" title="Assign Vendors"><i class="bi bi-people"></i></a>
+                                            <a href="<?php echo BASE_URL; ?>modules/rfqs/edit.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-warning text-dark" title="Edit"><i class="bi bi-pencil"></i></a>
+                                            <a href="<?php echo BASE_URL; ?>modules/rfqs/assign.php?id=<?php echo $r['rfq_id']; ?>" class="btn btn-info text-dark" title="Assign Vendors"><i class="bi bi-people"></i></a>
                                             <button type="button" class="btn btn-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $r['rfq_id']; ?>">
                                                 <i class="bi bi-trash"></i>
                                             </button>
@@ -189,6 +191,7 @@ require_once 'includes/sidebar.php';
                                     </div>
 
                                     <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
+                                    <?php ob_start(); ?>
                                     <!-- Delete Modal -->
                                     <div class="modal fade text-start" id="deleteModal<?php echo $r['rfq_id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -202,11 +205,12 @@ require_once 'includes/sidebar.php';
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="rfq_actions.php?action=delete&id=<?php echo $r['rfq_id']; ?>" class="btn btn-danger">Yes, Delete</a>
+                                                    <a href="<?php echo BASE_URL; ?>modules/rfqs/actions.php?action=delete&id=<?php echo $r['rfq_id']; ?>" class="btn btn-danger">Yes, Delete</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php $modals_html .= ob_get_clean(); ?>
                                     <?php endif; ?>
 
                                 </td>
@@ -245,4 +249,7 @@ require_once 'includes/sidebar.php';
     </nav>
 <?php endif; ?>
 
-<?php require_once 'includes/footer.php'; ?>
+<!-- Render Modals Here -->
+<?php echo $modals_html; ?>
+
+<?php require_once '../../includes/footer.php'; ?>

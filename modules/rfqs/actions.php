@@ -3,10 +3,10 @@
  * RFQ Actions (Update, Delete, Assign Vendors)
  */
 session_start();
-require_once 'config/db_connect.php';
+require_once '../../config/db_connect.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2)) {
-    header("Location: dashboard.php");
+    header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
     exit();
 }
 
@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (empty($title) || empty($deadline)) {
             $_SESSION['error_msg'] = "Title and Deadline are required.";
-            header("Location: edit_rfq.php?id=" . $rfq_id);
+            header("Location: " . BASE_URL . "modules/rfqs/edit.php?id=" . $rfq_id);
             exit();
         }
 
         if (count($item_names) === 0 || empty($item_names[0])) {
             $_SESSION['error_msg'] = "Minimum one item is required.";
-            header("Location: edit_rfq.php?id=" . $rfq_id);
+            header("Location: " . BASE_URL . "modules/rfqs/edit.php?id=" . $rfq_id);
             exit();
         }
 
@@ -62,13 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $pdo->commit();
             $_SESSION['success_msg'] = "RFQ updated successfully.";
-            header("Location: rfqs.php");
+            header("Location: " . BASE_URL . "modules/rfqs/list.php");
             exit();
 
         } catch (PDOException $e) {
             $pdo->rollBack();
             $_SESSION['error_msg'] = "Database Error: " . $e->getMessage();
-            header("Location: edit_rfq.php?id=" . $rfq_id);
+            header("Location: " . BASE_URL . "modules/rfqs/edit.php?id=" . $rfq_id);
             exit();
         }
     }
@@ -102,13 +102,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $pdo->commit();
-            header("Location: rfqs.php");
+            header("Location: " . BASE_URL . "modules/rfqs/list.php");
             exit();
 
         } catch (PDOException $e) {
             $pdo->rollBack();
             $_SESSION['error_msg'] = "Assignment Error: " . $e->getMessage();
-            header("Location: assign_vendors.php?id=" . $rfq_id);
+            header("Location: " . BASE_URL . "modules/rfqs/assign.php?id=" . $rfq_id);
             exit();
         }
     }
@@ -135,10 +135,10 @@ if ($action === 'delete') {
             $_SESSION['error_msg'] = "Cannot delete RFQ: " . $e->getMessage();
         }
     }
-    header("Location: rfqs.php");
+    header("Location: " . BASE_URL . "modules/rfqs/list.php");
     exit();
 }
 
-header("Location: rfqs.php");
+header("Location: " . BASE_URL . "modules/rfqs/list.php");
 exit();
 ?>

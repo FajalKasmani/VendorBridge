@@ -3,12 +3,12 @@
  * Save RFQ Logic (Create new RFQ)
  */
 session_start();
-require_once 'config/db_connect.php';
+require_once '../../config/db_connect.php';
 
 // Role Check: Only Admin (1) & Officer (2)
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
     $_SESSION['error_msg'] = "Access Denied.";
-    header("Location: dashboard.php");
+    header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
     exit();
 }
 
@@ -26,19 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validations
     if (empty($title) || empty($deadline)) {
         $_SESSION['error_msg'] = "Title and Deadline are required.";
-        header("Location: create_rfq.php");
+        header("Location: " . BASE_URL . "modules/rfqs/create.php");
         exit();
     }
 
     if (strtotime($deadline) < strtotime(date('Y-m-d'))) {
         $_SESSION['error_msg'] = "Deadline must be a future date.";
-        header("Location: create_rfq.php");
+        header("Location: " . BASE_URL . "modules/rfqs/create.php");
         exit();
     }
 
     if (count($item_names) === 0 || empty($item_names[0])) {
         $_SESSION['error_msg'] = "Minimum one item is required.";
-        header("Location: create_rfq.php");
+        header("Location: " . BASE_URL . "modules/rfqs/create.php");
         exit();
     }
 
@@ -69,18 +69,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
 
         $_SESSION['success_msg'] = "RFQ created successfully.";
-        header("Location: rfqs.php");
+        header("Location: " . BASE_URL . "modules/rfqs/list.php");
         exit();
 
     } catch (PDOException $e) {
         // ROLLBACK on error
         $pdo->rollBack();
         $_SESSION['error_msg'] = "Failed to create RFQ: " . $e->getMessage();
-        header("Location: create_rfq.php");
+        header("Location: " . BASE_URL . "modules/rfqs/create.php");
         exit();
     }
 } else {
-    header("Location: create_rfq.php");
+    header("Location: " . BASE_URL . "modules/rfqs/create.php");
     exit();
 }
 ?>

@@ -4,7 +4,7 @@
  * Process login credentials and start session securely
  */
 session_start();
-require_once 'config/db_connect.php';
+require_once '../../config/db_connect.php';
 
 // Check if request is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($email) || empty($password)) {
         $_SESSION['login_error'] = "Please enter both email and password.";
-        header("Location: login.php");
+        header("Location: " . BASE_URL . "modules/auth/login.php");
         exit();
     }
 
@@ -38,12 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_regenerate_id(true);
 
             // Redirect to dashboard
-            header("Location: dashboard.php");
+            header("Location: " . BASE_URL . "modules/dashboard/dashboard.php");
             exit();
         } else {
             // Invalid credentials
             $_SESSION['login_error'] = "Invalid email or password.";
-            header("Location: login.php");
+            header("Location: " . BASE_URL . "modules/auth/login.php");
             exit();
         }
 
@@ -51,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Log the error securely and show generic error
         error_log("Login Error: " . $e->getMessage());
         $_SESSION['login_error'] = "A system error occurred. Please try again later.";
-        header("Location: login.php");
+        header("Location: " . BASE_URL . "modules/auth/login.php");
         exit();
     }
 
 } else {
     // Direct access to this file is not allowed
-    header("Location: login.php");
+    header("Location: " . BASE_URL . "modules/auth/login.php");
     exit();
 }
 ?>

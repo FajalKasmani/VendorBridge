@@ -2,20 +2,20 @@
 /**
  * Create RFQ UI
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check: Only Admin & Officer can create
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -23,7 +23,7 @@ require_once 'includes/sidebar.php';
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="rfqs.php">RFQs</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>modules/rfqs/list.php">RFQs</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create</li>
         </ol>
     </nav>
@@ -37,7 +37,7 @@ require_once 'includes/sidebar.php';
     <?php unset($_SESSION['error_msg']); ?>
 <?php endif; ?>
 
-<form action="save_rfq.php" method="POST">
+<form action="<?php echo BASE_URL; ?>modules/rfqs/save.php" method="POST">
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-white py-3">
             <h5 class="mb-0 text-primary"><i class="bi bi-info-circle"></i> General Information</h5>
@@ -94,7 +94,7 @@ require_once 'includes/sidebar.php';
     </div>
 
     <div class="text-end mb-5">
-        <a href="rfqs.php" class="btn btn-secondary me-2">Cancel</a>
+        <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary me-2">Cancel</a>
         <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save"></i> Save RFQ</button>
     </div>
 </form>
@@ -138,4 +138,4 @@ function updateDeleteButtons() {
 }
 </script>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>

@@ -2,15 +2,15 @@
 /**
  * Add Vendor Page
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
@@ -22,13 +22,13 @@ try {
     $categories = [];
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Add New Vendor</h1>
-    <a href="vendors.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to Vendors</a>
+    <a href="<?php echo BASE_URL; ?>modules/vendors/list.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to Vendors</a>
 </div>
 
 <?php if (isset($_SESSION['error_msg'])): ?>
@@ -41,7 +41,7 @@ require_once 'includes/sidebar.php';
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
-        <form action="vendor_actions.php?action=create" method="POST">
+        <form action="<?php echo BASE_URL; ?>modules/vendors/actions.php?action=create" method="POST">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Company Name <span class="text-danger">*</span></label>
@@ -92,4 +92,4 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>

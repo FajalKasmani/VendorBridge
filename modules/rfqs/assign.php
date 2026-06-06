@@ -2,21 +2,21 @@
 /**
  * Assign Vendors to RFQ UI
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check: Only Admin & Officer
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
 $rfq_id = $_GET['id'] ?? null;
 if (!$rfq_id) {
-    header("Location: rfqs.php");
+    header("Location: " . BASE_URL . "modules/rfqs/list.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ try {
 
     if (!$rfq) {
         $_SESSION['error_msg'] = "RFQ not found.";
-        header("Location: rfqs.php");
+        header("Location: " . BASE_URL . "modules/rfqs/list.php");
         exit();
     }
 
@@ -45,13 +45,13 @@ try {
     die("Database Error.");
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Assign Vendors to RFQ</h1>
-    <a href="rfqs.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
+    <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
 </div>
 
 <?php if (isset($_SESSION['error_msg'])): ?>
@@ -68,7 +68,7 @@ require_once 'includes/sidebar.php';
     </div>
     <div class="card-body p-4">
         
-        <form action="rfq_actions.php?action=assign" method="POST">
+        <form action="<?php echo BASE_URL; ?>modules/rfqs/actions.php?action=assign" method="POST">
             <input type="hidden" name="rfq_id" value="<?php echo $rfq_id; ?>">
             
             <p class="text-muted mb-4">Select the active vendors you want to invite to this RFQ.</p>
@@ -98,7 +98,7 @@ require_once 'includes/sidebar.php';
 
             <hr class="my-4">
             <div class="text-end">
-                <a href="rfqs.php" class="btn btn-secondary me-2">Cancel</a>
+                <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary me-2">Cancel</a>
                 <button type="submit" class="btn btn-info text-dark px-4" <?php echo count($active_vendors) === 0 ? 'disabled' : ''; ?>>
                     <i class="bi bi-check2-square"></i> Save Assignments
                 </button>
@@ -108,4 +108,4 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>

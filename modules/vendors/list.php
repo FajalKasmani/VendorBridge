@@ -2,15 +2,15 @@
 /**
  * Vendor Management List Page
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied. You do not have permission to view this page.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
@@ -20,6 +20,8 @@ if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
 $search = $_GET['search'] ?? '';
 $filter_category = $_GET['category'] ?? '';
 $filter_status = $_GET['status'] ?? '';
+
+$modals_html = ''; // Store modals to output outside table
 
 // -----------------------------------------
 // Pagination Logic
@@ -89,13 +91,13 @@ try {
     $categories = [];
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Vendor Management</h1>
-    <a href="add_vendor.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Vendor</a>
+    <a href="<?php echo BASE_URL; ?>modules/vendors/add.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Vendor</a>
 </div>
 
 <!-- Success/Error Messages -->
@@ -189,13 +191,17 @@ require_once 'includes/sidebar.php';
                                 <td><i class="bi bi-star-fill text-warning"></i> <?php echo $v['rating']; ?></td>
                                 <td class="text-end pe-3">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="view_vendor.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-primary text-white" title="View"><i class="bi bi-eye"></i></a>
-                                        <a href="edit_vendor.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-warning text-dark" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        <a href="<?php echo BASE_URL; ?>modules/vendors/view.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-primary text-white" title="View"><i class="bi bi-eye"></i></a>
+                                        <a href="<?php echo BASE_URL; ?>modules/vendors/edit.php?id=<?php echo $v['vendor_id']; ?>" class="btn btn-warning text-dark" title="Edit"><i class="bi bi-pencil"></i></a>
                                         <button type="button" class="btn btn-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $v['vendor_id']; ?>">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
 
+                                    <?php 
+                                    // Store modal HTML to render outside the table-responsive div
+                                    ob_start(); 
+                                    ?>
                                     <!-- Delete Modal -->
                                     <div class="modal fade text-start" id="deleteModal<?php echo $v['vendor_id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -209,11 +215,14 @@ require_once 'includes/sidebar.php';
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="vendor_actions.php?action=delete&id=<?php echo $v['vendor_id']; ?>" class="btn btn-danger">Yes, Delete</a>
+                                                    <a href="<?php echo BASE_URL; ?>modules/vendors/actions.php?action=delete&id=<?php echo $v['vendor_id']; ?>" class="btn btn-danger">Yes, Delete</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php 
+                                    $modals_html .= ob_get_clean(); 
+                                    ?>
 
                                 </td>
                             </tr>
@@ -258,4 +267,7 @@ require_once 'includes/sidebar.php';
     </nav>
 <?php endif; ?>
 
-<?php require_once 'includes/footer.php'; ?>
+<!-- Render Modals Here -->
+<?php echo $modals_html; ?>
+
+<?php require_once '../../includes/footer.php'; ?>

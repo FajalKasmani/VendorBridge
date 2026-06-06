@@ -2,21 +2,21 @@
 /**
  * View Vendor Profile
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
 $vendor_id = $_GET['id'] ?? null;
 if (!$vendor_id) {
-    header("Location: vendors.php");
+    header("Location: " . BASE_URL . "modules/vendors/list.php");
     exit();
 }
 
@@ -33,20 +33,20 @@ try {
     
     if (!$vendor) {
         $_SESSION['error_msg'] = "Vendor not found.";
-        header("Location: vendors.php");
+        header("Location: " . BASE_URL . "modules/vendors/list.php");
         exit();
     }
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage());
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Vendor Profile</h1>
-    <a href="vendors.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    <a href="<?php echo BASE_URL; ?>modules/vendors/list.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to List</a>
 </div>
 
 <div class="card shadow-sm border-0">
@@ -90,8 +90,8 @@ require_once 'includes/sidebar.php';
         </div>
     </div>
     <div class="card-footer bg-light py-3">
-        <a href="edit_vendor.php?id=<?php echo $vendor['vendor_id']; ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profile</a>
+        <a href="<?php echo BASE_URL; ?>modules/vendors/edit.php?id=<?php echo $vendor['vendor_id']; ?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profile</a>
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>

@@ -2,21 +2,21 @@
 /**
  * Edit RFQ UI
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 // Role Check: Only Admin & Officer can edit
 if ($_SESSION['role_id'] != 1 && $_SESSION['role_id'] != 2) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
 $rfq_id = $_GET['id'] ?? null;
 if (!$rfq_id) {
-    header("Location: rfqs.php");
+    header("Location: " . BASE_URL . "modules/rfqs/list.php");
     exit();
 }
 
@@ -28,7 +28,7 @@ try {
 
     if (!$rfq) {
         $_SESSION['error_msg'] = "RFQ not found.";
-        header("Location: rfqs.php");
+        header("Location: " . BASE_URL . "modules/rfqs/list.php");
         exit();
     }
 
@@ -41,13 +41,13 @@ try {
     die("Database Error.");
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Edit RFQ: #<?php echo $rfq['rfq_id']; ?></h1>
-    <a href="rfqs.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
+    <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
 </div>
 
 <?php if (isset($_SESSION['error_msg'])): ?>
@@ -58,7 +58,7 @@ require_once 'includes/sidebar.php';
     <?php unset($_SESSION['error_msg']); ?>
 <?php endif; ?>
 
-<form action="rfq_actions.php?action=update" method="POST">
+<form action="<?php echo BASE_URL; ?>modules/rfqs/actions.php?action=update" method="POST">
     <input type="hidden" name="rfq_id" value="<?php echo $rfq['rfq_id']; ?>">
     
     <div class="card shadow-sm border-0 mb-4">
@@ -139,7 +139,7 @@ require_once 'includes/sidebar.php';
     </div>
 
     <div class="text-end mb-5">
-        <a href="rfqs.php" class="btn btn-secondary me-2">Cancel</a>
+        <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary me-2">Cancel</a>
         <button type="submit" class="btn btn-warning px-4"><i class="bi bi-save"></i> Update RFQ</button>
     </div>
 </form>
@@ -185,4 +185,4 @@ function updateDeleteButtons() {
 updateDeleteButtons();
 </script>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>

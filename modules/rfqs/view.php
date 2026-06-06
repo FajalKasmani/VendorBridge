@@ -2,20 +2,20 @@
 /**
  * View RFQ Details
  */
-require_once 'includes/auth_check.php';
-require_once 'config/db_connect.php';
+require_once '../../includes/auth_check.php';
+require_once '../../config/db_connect.php';
 
 if ($_SESSION['role_id'] == 4) {
-    require_once 'includes/header.php';
-    require_once 'includes/sidebar.php';
+    require_once '../../includes/header.php';
+    require_once '../../includes/sidebar.php';
     echo '<div class="alert alert-danger mt-3">Access Denied.</div>';
-    require_once 'includes/footer.php';
+    require_once '../../includes/footer.php';
     exit();
 }
 
 $rfq_id = $_GET['id'] ?? null;
 if (!$rfq_id) {
-    header("Location: rfqs.php");
+    header("Location: " . BASE_URL . "modules/rfqs/list.php");
     exit();
 }
 
@@ -27,7 +27,7 @@ try {
 
     if (!$rfq) {
         $_SESSION['error_msg'] = "RFQ not found.";
-        header("Location: rfqs.php");
+        header("Location: " . BASE_URL . "modules/rfqs/list.php");
         exit();
     }
 
@@ -48,13 +48,13 @@ try {
     die("Error: " . $e->getMessage());
 }
 
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+require_once '../../includes/header.php';
+require_once '../../includes/sidebar.php';
 ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">RFQ Details: #<?php echo $rfq['rfq_id']; ?></h1>
-    <a href="rfqs.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
+    <a href="<?php echo BASE_URL; ?>modules/rfqs/list.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to RFQs</a>
 </div>
 
 <div class="row">
@@ -90,8 +90,8 @@ require_once 'includes/sidebar.php';
             </div>
             <?php if ($_SESSION['role_id'] == 1 || $_SESSION['role_id'] == 2): ?>
             <div class="card-footer bg-light">
-                <a href="edit_rfq.php?id=<?php echo $rfq['rfq_id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit RFQ</a>
-                <a href="assign_vendors.php?id=<?php echo $rfq['rfq_id']; ?>" class="btn btn-info btn-sm"><i class="bi bi-people"></i> Manage Vendors</a>
+                <a href="<?php echo BASE_URL; ?>modules/rfqs/edit.php?id=<?php echo $rfq['rfq_id']; ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit RFQ</a>
+                <a href="<?php echo BASE_URL; ?>modules/rfqs/assign.php?id=<?php echo $rfq['rfq_id']; ?>" class="btn btn-info btn-sm"><i class="bi bi-people"></i> Manage Vendors</a>
             </div>
             <?php endif; ?>
         </div>
@@ -152,4 +152,4 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../../includes/footer.php'; ?>
